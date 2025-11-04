@@ -1,4 +1,4 @@
-name: astrbot_plugin_2class_notify
+name: astrbot_plugin_class2_notify
 desc: 一个用于查询和自动推送第二课堂课程更新的插件，支持按状态筛选课程并实时监控新课程上线。
 help: |
   📚 第二课堂通知插件
@@ -33,4 +33,4 @@ help: |
 
 version: v1.0.0
 author: Ri-Nai
-repo: https://github.com/Ri-Nai/astrbot_plugin_2class_notify
+repo: https://github.com/Ri-Nai/astrbot_plugin_class2_notify

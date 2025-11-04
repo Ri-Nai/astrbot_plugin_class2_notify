@@ -1,4 +1,4 @@
-# /astrbot_plugin_2class_notify/handlers/chat_handler.py
+# /astrbot_plugin_class2_notify/handlers/chat_handler.py
 
 from astrbot.api.event import AstrMessageEvent
 from astrbot.api import html_renderer

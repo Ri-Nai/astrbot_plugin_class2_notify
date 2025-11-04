@@ -1,4 +1,4 @@
-# /astrbot_plugin_2class_notify/services/scheduler_service.py
+# /astrbot_plugin_class2_notify/services/scheduler_service.py
 
 import asyncio
 from typing import List, Dict, Any

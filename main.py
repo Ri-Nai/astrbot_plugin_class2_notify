@@ -1,4 +1,4 @@
-# /astrbot_plugin_2class_notify/__init__.py
+# /astrbot_plugin_class2_notify/__init__.py
 
 from astrbot.api.event import filter, AstrMessageEvent
 from astrbot.api.star import Context, Star, register
@@ -10,7 +10,7 @@ from .handlers import ChatHandler
 
 
 @register(
-    "astrbot_plugin_2class_notify",
+    "astrbot_plugin_class2_notify",
     "Ri-Nai",
     "一个用于查询和推送第二课堂课程更新的插件",
     "1.0.0",
@@ -39,7 +39,7 @@ class Class2Notify(Star):
         # 5. 启动课程监控任务
         self.scheduler_service.start_monitoring()
 
-    @filter.command("第二课堂", alias={"2class", "课程"})
+    @filter.command("第二课堂", alias={"class2", "课程"})
     async def query_courses(self, event: AstrMessageEvent, status: str = None):
         """查询第二课堂课程"""
         async for result in self.chat_handler.process_course_query(event, status):

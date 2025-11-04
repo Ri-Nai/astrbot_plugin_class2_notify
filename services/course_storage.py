@@ -1,4 +1,4 @@
-# /astrbot_plugin_2class_notify/services/course_storage.py
+# /astrbot_plugin_class2_notify/services/course_storage.py
 
 import os
 import json
@@ -10,7 +10,7 @@ class CourseStorage:
     """课程数据存储服务，用于保存和对比课程数据"""
 
     def __init__(self):
-        self.storage_dir = os.path.join("data", "astrbot_plugin_2class_notify")
+        self.storage_dir = os.path.join("data", "astrbot_plugin_class2_notify")
         self.storage_file = os.path.join(self.storage_dir, "courses.json")
         self._ensure_storage_dir()
 

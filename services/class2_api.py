@@ -1,4 +1,4 @@
-# /astrbot_plugin_2class_notify/services/class2_api.py
+# /astrbot_plugin_class2_notify/services/class2_api.py
 
 import aiohttp
 from typing import Optional, Dict, List, Any

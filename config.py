@@ -1,4 +1,4 @@
-# /astrbot_plugin_2class_notify/config.py
+# /astrbot_plugin_class2_notify/config.py
 
 import os
 import json
@@ -82,7 +82,7 @@ class PluginConfig:
 def load_config(context, runtime_config=None) -> PluginConfig:
     """加载插件配置"""
     plugin_config_path = os.path.join(
-        "data", "config", "astrbot_plugin_2class_notify_config.json"
+        "data", "config", "astrbot_plugin_class2_notify_config.json"
     )
     p_config = PluginConfig(plugin_config_path, runtime_config)
 
