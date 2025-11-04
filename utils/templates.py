@@ -16,6 +16,9 @@ COURSE_LIST_TEMPLATE = """
             font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
         
         .container {
@@ -30,13 +33,14 @@ COURSE_LIST_TEMPLATE = """
         }
         
         .header h1 {
-            font-size: 42px;
+            font-size: 48px;
+            font-weight: 800;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
         
         .header p {
-            font-size: 18px;
+            font-size: 20px;
             opacity: 0.9;
         }
         
@@ -79,8 +83,8 @@ COURSE_LIST_TEMPLATE = """
             right: 15px;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 700;
             color: white;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
@@ -96,8 +100,8 @@ COURSE_LIST_TEMPLATE = """
         }
         
         .course-title {
-            font-size: 22px;
-            font-weight: bold;
+            font-size: 26px;
+            font-weight: 700;
             color: #333;
             margin-bottom: 15px;
             line-height: 1.4;
@@ -307,6 +311,9 @@ NEW_COURSE_NOTIFICATION_TEMPLATE = '''
             font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             padding: 30px 20px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
         
         .container {
@@ -331,8 +338,8 @@ NEW_COURSE_NOTIFICATION_TEMPLATE = '''
             padding: 10px 20px;
             background: rgba(255,255,255,0.3);
             border-radius: 20px;
-            font-size: 18px;
-            font-weight: bold;
+            font-size: 20px;
+            font-weight: 700;
             backdrop-filter: blur(10px);
         }
         
