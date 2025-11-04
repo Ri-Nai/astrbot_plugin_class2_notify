@@ -314,7 +314,8 @@ NEW_COURSE_NOTIFICATION_TEMPLATE = '''
         }
         
         .container {
-            max-width: 1200px;
+            /* 改为更适合单栏的宽度 */
+            max-width: 800px;
             margin: 0 auto;
         }
         
@@ -342,7 +343,8 @@ NEW_COURSE_NOTIFICATION_TEMPLATE = '''
         
         .course-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+            /* 直接使用 1fr，强制单栏布局 */
+            grid-template-columns: 1fr;
             gap: 25px;
         }
         
