@@ -42,7 +42,7 @@ class Class2Notify(Star):
     @filter.command("第二课堂", alias={"class2", "课程"})
     async def query_courses(self, event: AstrMessageEvent, status: str = None):
         """查询第二课堂课程"""
-        async for result in self.chat_handler.process_course_query(event, status):
+        async for result in self.chat_handler.process_course_query(event, str(status)):
             yield result
 
     @filter.command("help", alias={"帮助"})
