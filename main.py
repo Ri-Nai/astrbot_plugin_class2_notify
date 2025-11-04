@@ -39,7 +39,7 @@ class Class2Notify(Star):
         # 5. 启动课程监控任务
         self.scheduler_service.start_monitoring()
 
-    @filter.command("第二课堂", alias={"class2", "课程"})
+    @filter.command("第二课堂", alias={"class2"})
     async def query_courses(self, event: AstrMessageEvent, status: str = None):
         """查询第二课堂课程"""
         async for result in self.chat_handler.process_course_query(event, str(status)):
