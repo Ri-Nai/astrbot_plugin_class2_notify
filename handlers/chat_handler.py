@@ -164,9 +164,15 @@ class ChatHandler:
 
             # 使用 HTML 模板渲染
             try:
+                # 渲染选项：高质量 PNG 图片
+                options = {
+                    "full_page": True,
+                }
+
                 image_url = await html_renderer.render_custom_template(
                     COURSE_LIST_TEMPLATE,
                     template_data,
+                    options=options,
                 )
                 yield event.image_result(image_url)
 
