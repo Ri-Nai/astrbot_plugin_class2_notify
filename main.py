@@ -1,0 +1,74 @@
+# /astrbot_plugin_2class_notify/__init__.py
+
+from astrbot.api.event import filter, AstrMessageEvent
+from astrbot.api.star import Context, Star, register
+from astrbot.core import logger
+
+from .config import load_config
+from .services import Class2API, CourseStorage, SchedulerService
+from .handlers import ChatHandler
+
+
+@register(
+    "astrbot_plugin_2class_notify",
+    "Ri-Nai",
+    "一个用于查询和推送第二课堂课程更新的插件",
+    "1.0.0",
+)
+class Class2Notify(Star):
+    def __init__(self, context: Context, config=None):
+        super().__init__(context)
+        # 1. 加载配置
+        self.config = load_config(self.context, config)
+
+        # 2. 初始化服务层
+        self.api_service = Class2API(self.config)
+        self.storage_service = CourseStorage()
+        
+        # 3. 初始化调度服务
+        self.scheduler_service = SchedulerService(
+            self.context,
+            self.config,
+            self.api_service,
+            self.storage_service
+        )
+
+        # 4. 初始化处理器层
+        self.chat_handler = ChatHandler(self.config, self.api_service)
+
+        # 5. 启动课程监控任务
+        self.scheduler_service.start_monitoring()
+
+    @filter.command("第二课堂", alias={"2class", "课程"})
+    async def query_courses(self, event: AstrMessageEvent, status: str = None):
+        """查询第二课堂课程"""
+        async for result in self.chat_handler.process_course_query(event, status):
+            yield result
+
+    @filter.command("help", alias={"帮助"})
+    async def help(self, event: AstrMessageEvent):
+        """提供帮助信息"""
+        help_text = (
+            "📚 第二课堂通知插件帮助\n\n"
+            "/第二课堂 [状态] - 查询课程列表\n"
+            "  状态可选：\n"
+            "    0 - 未上架\n"
+            "    1 - 未开始\n"
+            "    2 - 进行中\n"
+            "    3 - 已结束\n"
+            "    4 - 已下架\n"
+            "    all - 所有状态\n"
+            "  示例：\n"
+            "    /第二课堂        # 查询默认状态的课程\n"
+            "    /第二课堂 2      # 查询进行中的课程\n"
+            "    /第二课堂 0,1,2  # 查询多个状态的课程\n"
+            "    /第二课堂 all    # 查询所有课程\n\n"
+            "💡 当有新课程上线时，会自动推送到配置的群组"
+        )
+        yield event.plain_result(help_text)
+
+    async def terminate(self):
+        """插件卸载时的清理操作"""
+        await self.scheduler_service.stop_monitoring()
+        await self.api_service.close()
+        logger.info("第二课堂通知插件已卸载")

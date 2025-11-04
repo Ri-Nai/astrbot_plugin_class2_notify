@@ -1,0 +1,36 @@
+name: astrbot_plugin_2class_notify
+desc: 一个用于查询和自动推送第二课堂课程更新的插件，支持按状态筛选课程并实时监控新课程上线。
+help: |
+  📚 第二课堂通知插件
+  
+  命令说明：
+  /第二课堂 [状态] - 查询课程列表
+  
+  状态参数（可选）：
+    0 - 未上架
+    1 - 未开始
+    2 - 进行中
+    3 - 已结束
+    4 - 已下架
+    all - 所有状态
+  
+  使用示例：
+    /第二课堂        # 查询默认状态的课程
+    /第二课堂 2      # 查询进行中的课程
+    /第二课堂 0,1,2  # 查询多个状态的课程
+    /第二课堂 all    # 查询所有课程
+  
+  自动通知：
+  当有新课程上线时，会自动推送到配置的群组
+  
+  配置说明：
+  - api_domain: 第二课堂API域名
+  - api_token: API认证Token（如需要）
+  - check_interval: 检查间隔（分钟，默认5分钟）
+  - notify_groups: 接收通知的群组列表
+  - enable_notification: 是否启用自动通知
+  - sign_status_filter: 默认显示的报名状态
+
+version: v1.0.0
+author: Ri-Nai
+repo: https://github.com/Ri-Nai/astrbot_plugin_2class_notify

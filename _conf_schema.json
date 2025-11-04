@@ -1,0 +1,38 @@
+{
+  "api_domain": {
+    "description": "第二课堂API域名",
+    "type": "string",
+    "default": "",
+    "hint": "例如: https://example.com"
+  },
+  "api_token": {
+    "description": "第二课堂API认证Token",
+    "type": "string",
+    "default": "",
+    "hint": "如果需要认证，请填写Bearer Token"
+  },
+  "check_interval": {
+    "description": "课程更新检查间隔（分钟）",
+    "type": "int",
+    "default": 5,
+    "hint": "单位：分钟，建议设置为5-30分钟"
+  },
+  "notify_groups": {
+    "description": "接收通知的群组",
+    "type": "list",
+    "default": [],
+    "hint": "填写需要接收课程更新通知的群号列表"
+  },
+  "enable_notification": {
+    "description": "是否启用自动通知",
+    "type": "bool",
+    "default": true,
+    "hint": "开启后，有新课程时会自动推送到指定群组"
+  },
+  "sign_status_filter": {
+    "description": "默认显示的报名状态",
+    "type": "list",
+    "default": [0, 1, 2],
+    "hint": "0-未上架, 1-未开始, 2-进行中, 3-已结束, 4-已下架"
+  }
+}
