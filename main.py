@@ -40,29 +40,26 @@ class Class2Notify(Star):
         self.scheduler_service.start_monitoring()
 
     @filter.command("第二课堂", alias={"class2"})
-    async def query_courses(self, event: AstrMessageEvent, status: str = None):
+    async def query_courses(self, event: AstrMessageEvent, page: str = "1"):
         """查询第二课堂课程"""
-        async for result in self.chat_handler.process_course_query(event, str(status)):
-            yield result
+        try:
+            page_num = max(1, int(page))  # 确保页码至少为1
+            async for result in self.chat_handler.process_course_query(event, page_num):
+                yield result
+        except ValueError:
+            yield event.plain_result("页码必须是正整数！\n例如：/第二课堂 2 表示查看第2页")
 
     @filter.command("help", alias={"帮助"})
     async def help(self, event: AstrMessageEvent):
         """提供帮助信息"""
         help_text = (
             "📚 第二课堂通知插件帮助\n\n"
-            "/第二课堂 [状态] - 查询课程列表\n"
-            "  状态可选：\n"
-            "    0 - 未上架\n"
-            "    1 - 未开始\n"
-            "    2 - 进行中\n"
-            "    3 - 已结束\n"
-            "    4 - 已下架\n"
-            "    all - 所有状态\n"
+            "/第二课堂 [页码] - 查询课程列表\n"
+            "  每页显示10个课程\n"
             "  示例：\n"
-            "    /第二课堂        # 查询默认状态的课程\n"
-            "    /第二课堂 2      # 查询进行中的课程\n"
-            "    /第二课堂 0,1,2  # 查询多个状态的课程\n"
-            "    /第二课堂 all    # 查询所有课程\n\n"
+            "    /第二课堂      # 查询第1页课程\n"
+            "    /第二课堂 2    # 查询第2页课程\n"
+            "    /第二课堂 3    # 查询第3页课程\n\n"
             "💡 当有新课程上线时，会自动推送到配置的群组"
         )
         yield event.plain_result(help_text)

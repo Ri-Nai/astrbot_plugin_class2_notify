@@ -201,7 +201,7 @@ COURSE_LIST_TEMPLATE = """
     <div class="container">
         <div class="header">
             <h1>📚 第二课堂课程列表</h1>
-            <p>共 {{ total_count }} 个课程{% if display_count < total_count %} · 显示前 {{ display_count }} 个{% endif %}</p>
+            <p>第 {{ current_page }}/{{ total_pages }} 页 · 本页 {{ display_count }} 个课程 · 共 {{ total_count }} 个课程</p>
         </div>
         
         <div class="course-grid">
@@ -280,11 +280,8 @@ COURSE_LIST_TEMPLATE = """
         </div>
         
         <div class="footer">
-            {% if total_count > display_count %}
-            <p>还有 {{ total_count - display_count }} 个课程未显示</p>
-            {% endif %}
-            <p style="margin-top: 10px;">💡 使用 /第二课堂 [状态] 查看不同状态的课程</p>
-            <p>状态：0-未上架 | 1-未开始 | 2-进行中 | 3-已结束 | 4-已下架</p>
+            <p>💡 使用 /第二课堂 [页码] 查看其他页面的课程</p>
+            <p>例如：/第二课堂 2 查看第2页</p>
         </div>
     </div>
 </body>

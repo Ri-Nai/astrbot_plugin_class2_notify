@@ -76,52 +76,27 @@ class ChatHandler:
     async def process_course_query(
         self,
         event: AstrMessageEvent,
-        status_arg: str = None,
+        page: int = 1,
     ):
         """
         处理课程查询请求
 
         Args:
             event: 消息事件
-            status_arg: 状态参数 (0, 1, 2 或 all)
+            page: 页码，默认第1页
 
         Yields:
             处理结果消息
         """
-        # 解析状态参数
-        if status_arg is None or status_arg == "":
-            # 使用默认的状态过滤
-            status_list = self.config.sign_status_filter
-        elif status_arg.lower() == "all":
-            # 显示所有状态
-            status_list = [0, 1, 2, 3, 4]
-        else:
-            # 解析用户指定的状态
-            try:
-                # 支持逗号分隔的多个状态，如 "0,1,2"
-                status_list = [
-                    int(s.strip()) for s in status_arg.split(",") if s.strip().isdigit()
-                ]
-                if not status_list:
-                    yield event.plain_result(
-                        "状态参数错误！\n"
-                        "用法：/第二课堂 [状态]\n"
-                        "状态可选：0(未上架), 1(未开始), 2(进行中), 3(已结束), 4(已下架), all(全部)\n"
-                        "示例：/第二课堂 0,1,2"
-                    )
-                    return
-            except ValueError:
-                yield event.plain_result(
-                    "状态参数格式错误！\n"
-                    "用法：/第二课堂 [状态]\n"
-                    "状态可选：0(未上架), 1(未开始), 2(进行中), 3(已结束), 4(已下架), all(全部)"
-                )
-                return
+        # 使用配置的状态过滤
+        status_list = self.config.sign_status_filter
+        items_per_page = 10  # 每页显示10条
 
         # 获取课程列表
-        yield event.plain_result("正在查询第二课堂课程...")
+        yield event.plain_result(f"正在查询第二课堂课程（第{page}页）...")
 
         try:
+            # 获取足够多的数据以便过滤（这里获取前200条）
             response = await self.api_service.get_course_list(page=1, limit=200)
 
             if not response or not response.get("data"):
@@ -149,17 +124,34 @@ class ChatHandler:
                 )
                 return
 
+            # 计算分页信息
+            total_filtered = len(filtered_courses)
+            total_pages = (total_filtered + items_per_page - 1) // items_per_page
+            
+            # 检查页码是否超出范围
+            if page > total_pages:
+                yield event.plain_result(
+                    f"页码超出范围！共 {total_pages} 页，请输入 1-{total_pages} 之间的页码。"
+                )
+                return
+            
+            # 计算当前页的数据范围
+            start_idx = (page - 1) * items_per_page
+            end_idx = min(start_idx + items_per_page, total_filtered)
+            page_courses = filtered_courses[start_idx:end_idx]
+
             # 准备渲染数据
-            display_count = min(len(filtered_courses), 10)
             courses_data = [
                 self._prepare_course_data(course)
-                for course in filtered_courses[:display_count]
+                for course in page_courses
             ]
 
             template_data = {
                 "courses": courses_data,
-                "total_count": len(filtered_courses),
-                "display_count": display_count,
+                "total_count": total_filtered,
+                "total_pages": total_pages,
+                "current_page": page,
+                "display_count": len(page_courses),
             }
 
             # 使用 HTML 模板渲染
@@ -175,16 +167,12 @@ class ChatHandler:
                 logger.error(f"生成课程列表图片失败: {e}")
                 # 图片生成失败时，回退到文本形式
                 fallback_message = (
-                    f"📚 第二课堂课程列表\n\n共 {len(filtered_courses)} 个课程\n\n"
+                    f"📚 第二课堂课程列表（第{page}/{total_pages}页）\n\n"
+                    f"本页 {len(page_courses)} 个课程，共 {total_filtered} 个课程\n\n"
                 )
-                for idx, course in enumerate(filtered_courses[:display_count], 1):
-                    fallback_message += f"{idx}. {course.get('title', '未知课程')}\n"
+                for idx, course in enumerate(page_courses, 1):
+                    fallback_message += f"{idx + start_idx}. {course.get('title', '未知课程')}\n"
                     fallback_message += f"   状态: {self.api_service.SIGN_STATUS_MAP.get(course.get('sign_status'), '未知')}\n\n"
-
-                if len(filtered_courses) > display_count:
-                    fallback_message += (
-                        f"\n还有 {len(filtered_courses) - display_count} 个课程未显示"
-                    )
 
                 yield event.plain_result(fallback_message)
 
