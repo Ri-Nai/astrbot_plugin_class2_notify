@@ -212,7 +212,7 @@ class SchedulerService:
             message_image_url = await html_renderer.render_custom_template(
                 NEW_COURSE_NOTIFICATION_TEMPLATE,
                 template_data,
-                {"type": "png", "full_page": True},
+                options={"full_page": True},
             )
         except Exception as e:
             logger.error(f"生成通知图片失败: {e}")
