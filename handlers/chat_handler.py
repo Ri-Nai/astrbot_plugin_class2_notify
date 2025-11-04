@@ -444,7 +444,7 @@ class ChatHandler:
                     "full_page": True,
                 }
                 
-                image_url = await event.html_render(COURSE_LIST_TEMPLATE, template_data, options=options)
+                image_url = await html_renderer.render_custom_template(COURSE_LIST_TEMPLATE, template_data, options=options)
                 yield event.image_result(image_url)
                 
             except Exception as e:

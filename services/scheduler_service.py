@@ -496,7 +496,7 @@ class SchedulerService:
         # 生成图片
         try:
             # 使用 html_renderer 渲染模板
-            message_image_url = await html_renderer.render(
+            message_image_url = await html_renderer.render_custom_template(
                 NEW_COURSE_NOTIFICATION_TEMPLATE,
                 template_data,
                 {"type": "png", "full_page": True}
