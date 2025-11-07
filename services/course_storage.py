@@ -59,7 +59,7 @@ class CourseStorage:
             logger.error(f"加载课程数据失败: {e}")
             return None
 
-    def find_new_courses(self, old_courses: List[Dict[str, Any]], new_courses: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    def find_new_courses(self, old_courses: List[Dict[str, Any]], new_courses: List[Dict[str, Any]], status_filter: List[int]) -> List[Dict[str, Any]]:
         """
         找出新增的课程
         
@@ -78,7 +78,7 @@ class CourseStorage:
         old_ids = {course.get("id") for course in old_courses if course.get("id")}
         new_items = [
             course for course in new_courses
-            if course.get("id") and course.get("id") not in old_ids
+            if course.get("sign_status") in status_filter and course.get("id") and course.get("id") not in old_ids
         ]
 
         if new_items:

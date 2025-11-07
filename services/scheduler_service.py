@@ -97,7 +97,7 @@ class SchedulerService:
 
             # 查找新增课程
             added_courses = self.storage_service.find_new_courses(
-                old_courses, new_courses
+                old_courses, new_courses, self.config.sign_status_filter
             )
 
             if added_courses:
